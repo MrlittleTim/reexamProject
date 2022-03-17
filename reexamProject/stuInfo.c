@@ -2,94 +2,92 @@
 
 char* colInfo[] = { "通信学院", "计算机学院", "光电学院", "自动化学院", "经管学院", "研究生学院",
 				   "外语学院", "安法学院", "体育学院", "传媒学院", "先进制造学院", "马克思主义学院" };
-node* InitHeadNode()
+List* list_init()
 {
-	node* headNode = (node*)malloc(sizeof(node));
-	headNode->next = NULL;
-	return headNode;
+	List* list = (List*)malloc(sizeof(List));
+	list->head = (Node*)malloc(sizeof(Node));
+	list->head->next = NULL;
+	list->tail = list->head;
+	return list;
 }
 
-node* CreatMemberNode(stuInfo val)
-{
-	node* posNode = (node*)malloc(sizeof(node));
-	posNode->val = val;
-	posNode->next = NULL;
-	return posNode;
-}
-int InsertNode(node* headNode, stuInfo val)
+void list_insert(List* list, stuInfo val)
 {
 	int ret = 0;
-	node* posNode = CreatMemberNode(val);
-	node* p = headNode;
-	while (p->next != NULL)
-	{
-		p = p->next;
-	}
-	p->next = posNode;
-	posNode->next = NULL;
-	ret = 1;
-	return ret;
+	Node* p = (Node*)malloc(sizeof(Node));
+	p->val = val;
+	p->next = NULL;
+	list->tail->next = p;
+	list->tail = p;
 }
-node* SearchNodeByID(node* headNode, char* ID)
+Node* list_search_byID(List* list, char* ID)
 {
-	node* p = headNode->next;
-	if (p == NULL)
+	Node* p = NULL;
+	for (p = list->head->next; p; p = p->next)
 	{
-		return NULL;
-	}
-	while (p != NULL && strcmp(p->val.stuID, ID))
-	{
-		p = p->next;
+		if (!strcmp(p->val.stuID, ID))
+		{
+			break;
+		}
 	}
 	return p;
 }
 //删除成功返回1，失败返回0
-int DelNodeByID(node* headNode, char* ID)
+int list_del_byID(List* list, char* ID)
 {
-	node* posFront = headNode;
-	node* pos = headNode->next;
-	if (pos == NULL)
+	int ret = 0;
+	Node* pFront = NULL;
+	Node* p = NULL;
+	for (pFront = list->head, p = list->head->next; p; pFront = pFront->next, p = p->next)
 	{
-		return 0;
+		if (!strcmp(p->val.stuID, ID))
+		{
+			pFront->next = p->next;
+			free(p);
+			ret = 1;
+			break;
+		}
 	}
-	while (pos != NULL && strcmp(pos->val.stuID, ID))
-	{
-		posFront = posFront->next;
-		pos = pos->next;
-	}
-	if (pos == NULL)
-	{
-		return 0;
-	}
-	posFront->next = pos->next;
-	free(pos);
-	return 1;
+	return ret;
 }
 
-
-void printStuInfo(node* headNode)
+void printStuInfo(List* list)
 {
-	node* p = headNode->next;
-
+	Node* p = NULL;
 	printf("-----------------------------------------------------------------------------------------------------------------------\n");
 	printf("%-12s%-10s%-16s%-10s%-8s%-10s%-10s%-10s%-10s%-10s%-10s%-10s\n",
 		"学号", "姓名", "学院", "类别", "体温", "是否咳嗽", "健康状况", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
 	printf("-----------------------------------------------------------------------------------------------------------------------\n");
-	while (p)
+	for (p = list->head->next; p; p = p->next)
 	{
 		printf("%-12s%-10s%-16s%-10s%-8.1f%-10d%-10d%-10d%-10d%-10d%-10d%-10d\n",
 			p->val.stuID, p->val.name, p->val.college, p->val.group, p->val.t, p->val.ks,
 			p->val.health, p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
-		p = p->next;
 	}
 	printf("-----------------------------------------------------------------------------------------------------------------------\n");
 }
-
-void addStuInfo(node* headNode)
+int isStuIDLegal(char* stuID)
+{
+	int ret = 0;
+	int year = 0;
+	int collegeID = 0;
+	char years[5] = { 0 };
+	char collegeIDs[3] = { 0 };
+	strncpy(years, stuID, 4);
+	strncpy(collegeIDs, stuID + 4, 2);
+	year = atoi(years);
+	collegeID = atoi(collegeIDs);
+	if (strlen(stuID) == 9
+		&& year >= 2016 && year <= 2019
+		&& collegeID >= 1 && collegeID <= 12)
+	{
+		ret = 1;
+	}
+	return ret;
+}
+void addStuInfo(List* list)
 {
 	stuInfo tempData;
-	int year;
-	int collegeID;
 	printf("请输入各项信息（按0退出）：\n");
 	while (1)
 	{
@@ -100,14 +98,19 @@ void addStuInfo(node* headNode)
 			printf("退出成功！");
 			return;
 		}
-		year = (tempData.stuID[0] - '0') * 1000 + (tempData.stuID[1] - '0') * 100 + 
-			(tempData.stuID[2] - '0') * 10 + (tempData.stuID[3] - '0');
-		collegeID = (tempData.stuID[4] - '0') * 10 + (tempData.stuID[5] - '0');
-		if (tempData.stuID[9] == '\0' && year >= 2016 && year <= 2019 && collegeID >= 1 && collegeID <= 12 )
+		
+		if (isStuIDLegal(tempData.stuID))
 		{
-			break;
+			if (list_search_byID(list, tempData.stuID) == 0)
+			{
+				break;
+			}
+			else
+				printf("学号已存在！\n");
+			
 		}
-		printf("该学号信息无效，请重新输入！\n");
+		else
+			printf("学号无效，请重新输入！\n");
 	}
 	printf("学生姓名：");
 	scanf("%s", tempData.name);
@@ -137,39 +140,36 @@ void addStuInfo(node* headNode)
 	//计算总分
 	tempData.total = tempData.score1 + tempData.score2 + tempData.score3 + tempData.score4;
 	//判断学院
+	int collegeID = 0;
+	char collegeIDs[3] = { 0 };
+	strncpy(collegeIDs, tempData.stuID + 4, 2);
+	collegeID = atoi(collegeIDs);
 	strcpy(tempData.college, colInfo[collegeID - 1]);
-
-	int ret = InsertNode(headNode, tempData);
-	if (ret)
-	{
-		printf("添加成功!\n");
-	}
-	else
-	{
-		printf("添加失败!\n");
-	}
+	list_insert(list, tempData);
+	printf("添加成功!\n");
+	
 }
 
-void delStuInfoByID(node* headNode)
+void delStuInfoByID(List* list)
 {
 	int temp;
 	char ID[20];
 	printf("请输入需要删除学生学号：");
 	scanf("%s", ID);
-	temp = DelNodeByID(headNode, ID);
+	temp = list_del_byID(list, ID);
 	if (temp)
 	{
-		printf("删除成功！\fn");
+		printf("删除成功！\n");
 	}
 	else
 	{
 		printf("删除失败！\n");
 	}
 }
-void upDataInfo(node* headNode)
+void updateInfo(List* list)
 {
 	char ID[20];
-	node* pos;
+	Node* pos;
 	while (1)
 	{
 		printf("请输入需要修改的学生学号（按0退出）：");
@@ -179,26 +179,11 @@ void upDataInfo(node* headNode)
 			printf("退出成功！");
 			return;
 		}
-		pos = SearchNodeByID(headNode, ID);
-		if (pos != NULL)
+		pos = list_search_byID(list, ID);
+		if (pos)
 		{
-			int year;
-			int collegeID;
+			strcpy(pos->val.stuID, ID);
 			printf("请输入各项信息：\n");
-			while (1)
-			{
-				printf("学生学号：");
-				scanf("%s", pos->val.stuID);
-				year = (pos->val.stuID[0] - '0') * 1000 + (pos->val.stuID[1] - '0') * 100 +
-					(pos->val.stuID[2] - '0') * 10 + (pos->val.stuID[3] - '0');
-				collegeID = (pos->val.stuID[4] - '0') * 10 + (pos->val.stuID[5] - '0');
-				//ID = (pos->val.stuID[6] - '0') * 100 + (pos->val.stuID[7] - '0') * 10 + (pos->val.stuID[8] - '0');
-				if (pos->val.stuID[9] == '\0' && year >= 2016 && year <= 2019 && collegeID >= 1 && collegeID <= 12)
-				{
-					break;
-				}
-				printf("该学号信息无效，请重新输入！\n");
-			}
 			printf("学生姓名：");
 			scanf("%s", pos->val.name);
 			printf("学生类别：");
@@ -217,44 +202,53 @@ void upDataInfo(node* headNode)
 			scanf("%d", &pos->val.score4);
 			//判断健康。0为异常，1为正常
 			if (pos->val.t >= 37.2 || pos->val.ks == 1)
-			{
 				pos->val.health = 0;
-			}
 			else
-			{
 				pos->val.health = 1;
-			}
 			//计算总分
 			pos->val.total = pos->val.score1 + pos->val.score2 + pos->val.score3 + pos->val.score4;
 			//判断学院
+			int collegeID = 0;
+			char collegeIDs[3] = { 0 };
+			strncpy(collegeIDs, ID + 4, 2);
+			collegeID = atoi(collegeIDs);
 			strcpy(pos->val.college, colInfo[collegeID - 1]);
 			printf("修改成功!\n");
 			break;
 		}
-		printf("学号有误，修改失败！\n");
+		else
+			printf("学号有误，修改失败！\n");
 	}
 }
 
-void searchStuInfoByID(node* headNode)
+void searchStuInfoByID(List* list)
 {
 	char ID[20];
-	node* p;
+	Node* p = NULL;
 	printf("请输入需要查询的学生学号：");
 	scanf("%s", ID);
-	p = SearchNodeByID(headNode, ID);
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
-	printf("%-12s%-10s%-16s%-10s%-8s%-10s%-10s%-10s%-10s%-10s%-10s%-10s\n",
-		"学号", "姓名", "学院", "类别", "体温", "是否咳嗽", "健康状况", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
-	printf("%-12s%-10s%-16s%-10s%-8.1f%-10d%-10d%-10d%-10d%-10d%-10d%-10d\n",
+	p = list_search_byID(list, ID);
+	if (p)
+	{
+		printf("-----------------------------------------------------------------------------------------------------------------------\n");
+		printf("%-12s%-10s%-16s%-10s%-8s%-10s%-10s%-10s%-10s%-10s%-10s%-10s\n",
+			"学号", "姓名", "学院", "类别", "体温", "是否咳嗽", "健康状况", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
+		printf("-----------------------------------------------------------------------------------------------------------------------\n");
+		printf("%-12s%-10s%-16s%-10s%-8.1f%-10d%-10d%-10d%-10d%-10d%-10d%-10d\n",
 			p->val.stuID, p->val.name, p->val.college, p->val.group, p->val.t, p->val.ks,
 			p->val.health, p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
+		printf("-----------------------------------------------------------------------------------------------------------------------\n");
+	}
+	else
+	{
+		printf("查找失败！\n");
+	}
+	
 }
-void searchStuInfoByName(node* headNode)
+void searchStuInfoByName(Node* headNode)
 {
 	char name[10];
-	node* p = headNode->next;
+	Node* p = headNode->next;
 	printf("请输入需要查询的学生姓名：");
 	scanf("%s", name);
 	printf("-----------------------------------------------------------------------------------------------------------------------\n");
@@ -274,35 +268,35 @@ void searchStuInfoByName(node* headNode)
 	printf("-----------------------------------------------------------------------------------------------------------------------\n");
 }
 
-node* classifyGroup(node* headNode, char* group)
-{
-	node* posNode = headNode->next;
-	node* newList = InitHeadNode();
-	if (posNode == NULL)
-	{
-		return newList;
-	}
-	while (posNode != NULL)
-	{
-		if (!strcmp(posNode->val.group, group))
-		{
-			InsertNode(newList, posNode->val);
-		}
-		posNode = posNode->next;
-	}
-	return newList;
-}
-int priorityCmp(node* p, node* q)
+//Node* classifyGroup(Node* headNode, char* group)
+//{
+//	Node* posNode = headNode->next;
+//	Node* newList = InitHeadNode();
+//	if (posNode == NULL)
+//	{
+//		return newList;
+//	}
+//	while (posNode != NULL)
+//	{
+//		if (!strcmp(posNode->val.group, group))
+//		{
+//			InsertNode(newList, posNode->val);
+//		}
+//		posNode = posNode->next;
+//	}
+//	return newList;
+//}
+int priorityCmp(Node* p, Node* q)
 {
 	return p->val.total == q->val.total ? (p->val.score3 == q->val.score3 ? p->val.score4 - q->val.score4 : p->val.score3 - q->val.score3) : p->val.total - q->val.total;
 }
 //冒泡排序
-void sortStuInfo(node* headNode)
+void sortStuInfo(Node* headNode)
 {
-	for (node* i = headNode->next; i->next->next != NULL; i = i->next)
+	for (Node* i = headNode->next; i->next->next != NULL; i = i->next)
 	{
 		int flag = 1;
-		for (node* j = headNode->next; j->next != NULL; j = j->next)
+		for (Node* j = headNode->next; j->next != NULL; j = j->next)
 		{
 			if (priorityCmp(j, j->next) < 0)
 			{
@@ -319,7 +313,7 @@ void sortStuInfo(node* headNode)
 	}
 }
 //统计数据
-node* calculateData(node* headNode, char* fileName)
+Node* calculateData(Node* headNode, char* fileName)
 {
 	if (headNode->next == NULL)
 	{
@@ -330,26 +324,26 @@ node* calculateData(node* headNode, char* fileName)
 	return headNode;
 }
 
-void exceptionCount(node* headNode)
-{
-	node* posNode = headNode->next;
-	if (posNode == NULL)
-	{
-		return;
-	}
-	node* newList = InitHeadNode();
-	while (posNode)
-	{
-		if (posNode->val.health == 0)
-		{
-			InsertNode(newList, posNode->val);
-		}
-		posNode = posNode->next;
-	}
-	printStuInfo(newList);
-	writeStuInfo("data6.txt", newList);
-}
-void readStuInfo(char* FileName, node* headNode)
+//void exceptionCount(Node* headNode)
+//{
+//	Node* posNode = headNode->next;
+//	if (posNode == NULL)
+//	{
+//		return;
+//	}
+//	Node* newList = InitHeadNode();
+//	while (posNode)
+//	{
+//		if (posNode->val.health == 0)
+//		{
+//			InsertNode(newList, posNode->val);
+//		}
+//		posNode = posNode->next;
+//	}
+//	printStuInfo(newList);
+//	writeStuInfo("data6.txt", newList);
+//}
+void readStuInfo(char* FileName, List* list)
 {
 	FILE* fp = fopen(FileName, "r");
 	if (!fp)
@@ -364,13 +358,13 @@ void readStuInfo(char* FileName, node* headNode)
 			tempData.stuID, tempData.name, tempData.college, tempData.group,
 			&tempData.t, &tempData.ks, &tempData.health,
 			&tempData.score1, &tempData.score2, &tempData.score3, &tempData.score4, &tempData.total);
-		InsertNode(headNode, tempData);
+		list_insert(list, tempData);
 	}
 	fclose(fp);
 }
-void writeStuInfo(char* FileName, node* headNode)
+void writeStuInfo(char* FileName, List* list)
 {
-	node* p = headNode->next;
+	Node* p = list->head->next;
 	FILE* fp = fopen(FileName, "w");
 	while (p)
 	{

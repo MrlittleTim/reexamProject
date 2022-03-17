@@ -23,32 +23,32 @@ typedef struct LinkListNode
 {
     stuInfo val;
     struct LinkListNode* next;
-}node;
+} Node;
 
 typedef struct _list
 {
-    node* head;
-    node* tail;
-};
+    Node* head;
+    Node* tail;
+} List;
 
 
-node* InitHeadNode();
-node* CreatMemberNode(stuInfo val);
-int InsertNode(node* headNode, stuInfo val);
-node* SearchNodeByID(node* headNode, char* ID);
-int DelNodeByID(node* headNode, char* ID);
+List* list_init();
+void list_insert(List* list, stuInfo val);
+Node* list_search_byID(List* list, char* ID);
+int list_del_byID(List* list, char* ID);
 
-void printStuInfo(node* headNode);
-void addStuInfo(node* headNode);
-void delStuInfoByID(node* headNode);
-void upDataInfo(node* headNode);
-void searchStuInfoByID(node* headNode);
-void searchStuInfoByName(node* headNode);
-node* classifyGroup(node* headNode, char* group);
-int priorityCmp(node* p, node* q);
-void sortStuInfo(node* headNode);
-node* calculateData(node* headNode, char* fileName);
-void exceptionCount(node* headNode);
+void printStuInfo(List* list);
+int isStuIDLegal(char* stuID);
+void addStuInfo(List* list);
+void delStuInfoByID(List* list);
+void searchStuInfoByID(List* list);
+void searchStuInfoByName(Node* headNode);
+void updateInfo(List* list);
+Node* classifyGroup(Node* headNode, char* group);
+int priorityCmp(Node* p, Node* q);
+void sortStuInfo(Node* headNode);
+Node* calculateData(Node* headNode, char* fileName);
+void exceptionCount(Node* headNode);
 
-void readStuInfo(char* FileName, node* headNode);
-void writeStuInfo(char* FileName, node* headNode);
+void readStuInfo(char* FileName, List* list);
+void writeStuInfo(char* FileName, List* list);
