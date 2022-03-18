@@ -1,53 +1,29 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include <conio.h>
 #include "stuInfo.h"
-//#include "account.h"
-
-
-//acNode* acList = NULL;
-//acNode* curAc = NULL;
+#include "account.h"
 
 void menu();
 void pause();
 void loading();
-void keyDown(List* list);
-//void login(acNode* headNode);
-
-//int main()
-//{
-//	list = InitHeadNode();
-//	//acList = InitAcHeadNode();
-//	//curAc = InitAcHeadNode();
-//	readStuInfo("data2.txt", list);
-//	//readAcInfo("data1.txt", acList);
-//
-//	//login(curAc);
-//	loading();
-//	system("cls");
-//	system("color 1f");
-//	while (1)
-//	{
-//		keyDown();
-//	}
-//	return 0;
-//}
-
-
+void keyDown(List* list, ACNode* curNode);
+void login(ACList* acList, ACNode* curNode);
 
 int main()
 {
 	List* list = list_init();
 	readStuInfo("./data2.txt", list);
+	ACList* acList = InitAcHeadNode();
+	readAcInfo("data1.txt", acList);
+	ACNode* curNode = (ACNode*)malloc(sizeof(ACNode));
 
+	login(acList, curNode);
+	loading();
+	system("cls");
+	system("color 1f");
 	while (1)
 	{
-		//loading();
-		system("cls");
-		system("color 1f");
-		while (1)
-		{
-			keyDown(list);
-		}
+		keyDown(list, curNode);
 	}
 	return 0;
 }
@@ -82,25 +58,25 @@ void loading()
 	}
 }
 
-void keyDown(List* list)
+void keyDown(List* list, ACNode* curNode)
 {
 	int choose;
 	system("cls");
 	menu();
 	printf("请输入您要的操作(0~8)：");
 	scanf("%d", &choose);
-	//if (curAc->val.role == 2 && (choose == 1 || choose == 4 || choose == 5))//系统操作员，删除修改无权限
-	//{
-	//	printf("抱歉，您没有权限，请联系管理员！\n");
-	//	pause();
-	//	return;
-	//}
-	//else if(curAc->val.role == 3 && (choose == 1 || choose == 2 || choose == 3 || choose == 4 || choose ==  5 || choose == 7 || choose == 8))//学生只有查询权限
-	//{
-	//	printf("抱歉，您没有权限，请联系管理员！\n");
-	//	pause();
-	//	return;
-	//}
+	if (curNode->val.role == 2 && (choose == 1 || choose == 4 || choose == 5))//系统操作员，删除修改无权限
+	{
+		printf("抱歉，您没有权限，请联系管理员！\n");
+		pause();
+		return;
+	}
+	else if(curNode->val.role == 3 && (choose == 1 || choose == 2 || choose == 3 || choose == 4 || choose ==  5 || choose == 7 || choose == 8))//学生只有查询权限
+	{
+		printf("抱歉，您没有权限，请联系管理员！\n");
+		pause();
+		return;
+	}
 	switch (choose)
 	{
 	case 1:
@@ -200,33 +176,34 @@ void keyDown(List* list)
 	}
 }
 
-//void login(acNode* headNode)
-//{
-//	printf("-------------------------------------------------\n");
-//	printf("---------------欢迎进入学生管理系统--------------\n");
-//	printf("-------------------------------------------------\n");
-//	while (1)
-//	{
-//		printf("请输入账号：");
-//		scanf("%s", headNode->val.ID);
-//		printf("请输入密码：");
-//		scanf("%s", headNode->val.pwd);
-//		acNode* acFlag = acInfoJudge(acList, headNode->val.ID, headNode->val.pwd);
-//		//账号密码匹配返回地址，不匹配返回NULL
-//		if (acFlag != NULL)
-//		{
-//			headNode->val = acFlag->val;
-//			//未登陆过，重置密码
-//			if (acFlag->val.loginFlag == 0)
-//			{
-//				printf("请输入新密码：");
-//				scanf("%s", acFlag->val.pwd);
-//				acFlag->val.loginFlag = 1;
-//				writeAcInfo("data1.txt", acList);
-//			}
-//			break;
-//		}
-//
-//		printf("账号或密码有误，请重新输入！\n");
-//	}
-//}
+void login(ACList* acList, ACNode* curNode)
+{
+	printf("-------------------------------------------------\n");
+	printf("---------------欢迎进入学生管理系统--------------\n");
+	printf("-------------------------------------------------\n");
+	while (1)
+	{
+		acInfo val;
+		printf("请输入账号：");
+		scanf("%s", val.ID);
+		printf("请输入密码：");
+		scanf("%s", val.pwd);
+		ACNode* acFlag = acInfoJudge(acList, val.ID, val.pwd);
+		//账号密码匹配返回地址，不匹配返回NULL
+		if (acFlag)
+		{
+			curNode->val = acFlag->val;
+			curNode->next = NULL;
+			//未登陆过，重置密码
+			if (acFlag->val.loginFlag == 0)
+			{
+				printf("请输入新密码：");
+				scanf("%s", acFlag->val.pwd);
+				acFlag->val.loginFlag = 1;
+				writeAcInfo("data1.txt", acList);
+			}
+			break;
+		}
+		printf("账号或密码有误，请重新输入！\n");
+	}
+}

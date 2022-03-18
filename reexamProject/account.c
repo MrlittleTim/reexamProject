@@ -1,81 +1,71 @@
 #include "account.h"
-
-acNode* InitAcHeadNode()
+#include "stuInfo.h"
+ACList* InitAcHeadNode()
 {
-	acNode* headNode = (acNode*)malloc(sizeof(acNode));
-	headNode->next = NULL;
-	return headNode;
+	ACList* aclist = (ACList*)malloc(sizeof(ACList));
+	aclist->head = (ACNode*)malloc(sizeof(ACNode));
+	aclist->head->next = NULL;
+	aclist->tail = aclist->head;
+	return aclist;
 }
 
-acNode* CreatAcMemberNode(acInfo val)
-{
-	acNode* posNode = (acNode*)malloc(sizeof(acNode));
-	posNode->val = val;
-	posNode->next = NULL;
-	return posNode;
-}
-int InsertAcNode(acNode* headNode, acInfo val)
+void InsertAcNode(ACList* aclist, acInfo val)
 {
 	int ret = 0;
-	acNode* posNode = CreatAcMemberNode(val);
-	acNode* p = headNode;
-	while (p->next != NULL)
-	{
-		p = p->next;
-	}
-	p->next = posNode;
-	posNode->next = NULL;
-	ret = 1;
-	return ret;
+	ACNode* p = (ACNode*)malloc(sizeof(ACNode));
+	p->val = val;
+	p->next = NULL;
+	aclist->tail->next = p;
+	aclist->tail = p;
 }
 
-void readAcInfo(char* FileName, acNode* headNode)
+void readAcInfo(char* FileName, ACList* aclist)
 
 {
 	FILE* fp = fopen(FileName, "r");
 	if (!fp)
 	{
-		printf("文件打开错误！\n");
+		perror("");
 		return;
 	}
 	acInfo tempData;
 	while (!feof(fp))
 	{
 		fscanf(fp, "%20s%20s%4d%4d\n", tempData.ID, tempData.pwd, &tempData.role, &tempData.loginFlag);
-		InsertAcNode(headNode, tempData);
+		InsertAcNode(aclist, tempData);
 	}
 	fclose(fp);
 }
-void writeAcInfo(char* FileName, acNode* headNode)
+void writeAcInfo(char* FileName, ACList* aclist)
 {
-	acNode* posNode = headNode->next;
+	ACNode* p = NULL;
 	FILE* fp = fopen(FileName, "w");
-	while (posNode)
+	for (p = aclist->head->next; p; p = p->next)
 	{
-		fprintf(fp, "%-20s%-20s%-4d%-4d\n", posNode->val.ID, posNode->val.pwd, posNode->val.role, posNode->val.loginFlag);
-		posNode = posNode->next;
+		fprintf(fp, "%-20s%-20s%-4d%-4d\n", p->val.ID, p->val.pwd, p->val.role, p->val.loginFlag);
 	}
 	fclose(fp);
 }
 
 
 //信息正确返回地址，信息有误返回NULL
-acNode* acInfoJudge(acNode* headNode, char* ID, char* pwd)
+ACNode* acInfoJudge(ACList* aclist, char* ID, char* pwd)
 {
-	acNode* posNode = headNode->next;
+	ACNode* posNode = aclist->head->next;
 	if (posNode == NULL)
-	{
 		return NULL;
-	}
-	while (posNode && (strcmp(posNode->val.ID, ID) || strcmp(posNode->val.pwd, pwd)))
+	for (; posNode; posNode = posNode->next)
 	{
-		posNode = posNode->next;
+		if (!strcmp(posNode->val.ID, ID) && !strcmp(posNode->val.pwd, pwd))
+		{
+			break;
+		}
 	}
 	return posNode;
 }
 
 
-void addAcInfo(acNode* headNode)
+void addAcInfo(ACList* aclist)
 {
 	acInfo tempData;
 	tempData.loginFlag = 0;
@@ -93,18 +83,15 @@ void addAcInfo(acNode* headNode)
 		{
 			while (1)
 			{
-				int year;
-				int collegeID;
+				
 				printf("学生学号：");
 				scanf("%s", tempData.ID);
-				year = (tempData.ID[0] - '0') * 1000 + (tempData.ID[1] - '0') * 100 +
-					(tempData.ID[2] - '0') * 10 + (tempData.ID[3] - '0');
-				collegeID = (tempData.ID[4] - '0') * 10 + (tempData.ID[5] - '0');
-				if (tempData.ID[9] == '\0' && year >= 2016 && year <= 2019 && collegeID >= 1 && collegeID <= 12)
+				if (isStuIDLegal(tempData.ID))
 				{
 					break;
 				}
-				printf("该学号信息无效，请重新输入！\n");
+				else
+					printf("该学号信息无效，请重新输入！\n");
 			}
 			break;
 		}
@@ -121,7 +108,7 @@ void addAcInfo(acNode* headNode)
 
 	}
 	strcpy(tempData.pwd, tempData.ID);
-	InsertAcNode(headNode, tempData);
-	writeAcInfo("data1.txt", headNode);
+	InsertAcNode(aclist, tempData);
+	writeAcInfo("data1.txt", aclist);
 	printf("添加成功！");
 }

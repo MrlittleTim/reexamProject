@@ -9,19 +9,23 @@ typedef struct accountInfo
 	char pwd[20];
 	int role;		//1-系统管理员	2-系统操作员	3-学生
 	int loginFlag;	//1-已登录过	0-未登陆过
-}acInfo;
+} acInfo;
 
 typedef struct accountNode
 {
 	acInfo val;
 	struct accountNode* next;
-}acNode;
+} ACNode;
+typedef struct _acList
+{
+	ACNode* head;
+	ACNode* tail;
+} ACList;
 
-acNode* InitAcHeadNode();
-acNode* CreatAcMemberNode(acInfo val);
-int InsertAcNode(acNode* headNode, acInfo val);
-void readAcInfo(char* FileName, acNode* headNode);
-void writeAcInfo(char* FileName, acNode* headNode);
+ACList* InitAcHeadNode();
+void InsertAcNode(ACList* aclist, acInfo val);
+void readAcInfo(char* FileName, ACList* aclist);
+void writeAcInfo(char* FileName, ACList* aclist);
 
-acNode* acInfoJudge(acNode* headNode, char* ID, char* pwd);
-void addAcInfo(acNode* headNode);
+ACNode* acInfoJudge(ACList* aclist, char* ID, char* pwd);
+void addAcInfo(ACList* aclist);
