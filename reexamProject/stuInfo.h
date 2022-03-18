@@ -42,13 +42,14 @@ int isStuIDLegal(char* stuID);
 void addStuInfo(List* list);
 void delStuInfoByID(List* list);
 void searchStuInfoByID(List* list);
-void searchStuInfoByName(Node* headNode);
+void searchStuInfoByName(List* list);
 void updateInfo(List* list);
-Node* classifyGroup(Node* headNode, char* group);
+
+List* classifyGroup(List* list, char* group);
 int priorityCmp(Node* p, Node* q);
-void sortStuInfo(Node* headNode);
-Node* calculateData(Node* headNode, char* fileName);
-void exceptionCount(Node* headNode);
+void sortStuInfo(List* list);
+List* calculateData(List* list, char* fileName);
+void exceptionCount(List* list);
 
 void readStuInfo(char* FileName, List* list);
 void writeStuInfo(char* FileName, List* list);

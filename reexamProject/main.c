@@ -156,7 +156,7 @@ void keyDown(List* list)
 			{
 				system("cls");
 				printf("\n\t\t\t\t\t\t【查找信息】\n\n");
-				//searchStuInfoByName(list);
+				searchStuInfoByName(list);
 				break;
 			}
 			else if (choose == 0)
@@ -172,22 +172,22 @@ void keyDown(List* list)
 	case 7:
 		system("cls");
 		printf("\n\t\t\t\t\t\t【数据统计】\n\n");
-		/*Node* data3 = classifyGroup(list, "学硕");
-		Node* data4 = classifyGroup(list, "专硕");
-		Node* data5 = classifyGroup(list, "非全日制");
+		List* data3 = classifyGroup(list, "学硕");
+		List* data4 = classifyGroup(list, "专硕");
+		List* data5 = classifyGroup(list, "非全日制");
 		data3 = calculateData(data3, "data3.txt");
 		data4 = calculateData(data4, "data4.txt");
 		data5 = calculateData(data5, "data5.txt");
 		printStuInfo(data3);
 		printStuInfo(data4);
 		printStuInfo(data5);
-		printf("统计完成！\n");*/
+		printf("统计完成！\n");
 		pause();
 		break;
 	case 8:
 		system("cls");
 		printf("\n\t\t\t\t\t\t【异常统计】\n\n");
-		//exceptionCount(list);
+		exceptionCount(list);
 		pause();
 		break;
 	case 0:
