@@ -9,15 +9,13 @@ typedef struct studentInfo {
     char name[10];
     char college[20];
     char group[10];     // Àà±ð
-    float t;            // ÎÂ¶È
-    int ks;             // ¿ÈËÔ
-    int health;         // ½¡¿µ×´Ì¬
     int score1;
     int score2;
     int score3;
     int score4;
     int total;
 }stuInfo;
+
 
 typedef struct LinkListNode
 {

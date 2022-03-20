@@ -38,7 +38,6 @@ void menu()
 	printf("***** \t5. 修改信息\t*****\n");
 	printf("***** \t6. 查找信息\t*****\n");
 	printf("***** \t7. 数据统计\t*****\n");
-	printf("***** \t8. 异常统计\t*****\n");
 	printf("***** \t0. 退出    \t*****\n");
 	printf("-----------------------------\n");
 }
@@ -158,12 +157,6 @@ void keyDown(List* list, ACNode* curNode)
 		printStuInfo(data4);
 		printStuInfo(data5);
 		printf("统计完成！\n");
-		pause();
-		break;
-	case 8:
-		system("cls");
-		printf("\n\t\t\t\t\t\t【异常统计】\n\n");
-		exceptionCount(list);
 		pause();
 		break;
 	case 0:

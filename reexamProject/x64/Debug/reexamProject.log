@@ -1,4 +1,39 @@
-﻿  main.c
-C:\dev\reexamProject\reexamProject\main.c(67,2): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
-C:\dev\reexamProject\reexamProject\main.c(76,8): warning C4013: “Sleep”未定义；假设外部返回 int
+﻿  stuInfo.c
+C:\dev\reexamProject\reexamProject\stuInfo.c(76,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(77,2): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(97,4): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(118,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(120,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(122,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(124,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(126,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(128,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(134,3): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(136,3): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(142,4): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(166,3): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(180,4): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(205,4): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(214,5): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(217,5): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(219,5): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(221,5): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(223,5): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(225,5): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(227,5): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(233,5): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(235,5): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(246,4): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(275,10): warning C4477: 'printf' : format string '%-8.1f' requires an argument of type 'double', but variadic argument 5 has type 'int'
+C:\dev\reexamProject\reexamProject\stuInfo.c(275,10): warning C4473: 'printf' : not enough arguments passed for format string
+C:\dev\reexamProject\reexamProject\stuInfo.c(275,10): message : placeholders and their parameters expect 12 variadic arguments, but 9 were provided
+C:\dev\reexamProject\reexamProject\stuInfo.c(275,10): message : the missing variadic argument 10 is required by format string '%-10d'
+C:\dev\reexamProject\reexamProject\stuInfo.c(267,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(291,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(353,3): warning C4033: 'calculateData' must return a value
+C:\dev\reexamProject\reexamProject\stuInfo.c(361,13): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(364,8): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(370,3): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(380,13): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\dev\reexamProject\reexamProject\stuInfo.c(357): warning C4715: 'calculateData': not all control paths return a value
   reexamProject.vcxproj -> C:\dev\reexamProject\x64\Debug\reexamProject.exe

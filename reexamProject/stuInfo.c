@@ -54,17 +54,17 @@ int list_del_byID(List* list, char* ID)
 void printStuInfo(List* list)
 {
 	Node* p = NULL;
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
-	printf("%-12s%-10s%-16s%-10s%-8s%-10s%-10s%-10s%-10s%-10s%-10s%-10s\n",
-		"学号", "姓名", "学院", "类别", "体温", "是否咳嗽", "健康状况", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
+	printf("--------------------------------------------------------------------------------------------\n");
+	printf("%-12s%-10s%-16s%-10s%-10s%-10s%-10s%-10s%-10s\n",
+		"学号", "姓名", "学院", "类别", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
+	printf("--------------------------------------------------------------------------------------------\n");
 	for (p = list->head->next; p; p = p->next)
 	{
-		printf("%-12s%-10s%-16s%-10s%-8.1f%-10d%-10d%-10d%-10d%-10d%-10d%-10d\n",
-			p->val.stuID, p->val.name, p->val.college, p->val.group, p->val.t, p->val.ks,
-			p->val.health, p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
+		printf("%-12s%-10s%-16s%-10s%-10d%-10d%-10d%-10d%-10d\n",
+			p->val.stuID, p->val.name, p->val.college, p->val.group, 
+			p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
 	}
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
+	printf("--------------------------------------------------------------------------------------------\n");
 }
 int isStuIDLegal(char* stuID)
 {
@@ -88,65 +88,71 @@ int isStuIDLegal(char* stuID)
 void addStuInfo(List* list)
 {
 	stuInfo tempData;
-	printf("请输入各项信息（按0退出）：\n");
 	while (1)
 	{
-		printf("学生学号：");
-		scanf("%s", tempData.stuID);
-		if (tempData.stuID[0] == '0' && tempData.stuID[1] == '\0')
+		printf("请输入各项信息（按0退出）：\n");
+		while (1)
 		{
-			printf("退出成功！");
-			return;
-		}
-		
-		if (isStuIDLegal(tempData.stuID))
-		{
-			if (list_search_byID(list, tempData.stuID) == 0)
+			printf("学生学号：");
+			scanf("%s", tempData.stuID);
+			if (tempData.stuID[0] == '0' && tempData.stuID[1] == '\0')
 			{
-				break;
+				printf("退出成功！");
+				return;
+			}
+
+			if (isStuIDLegal(tempData.stuID))
+			{
+				if (list_search_byID(list, tempData.stuID) == 0)
+				{
+					break;
+				}
+				else
+					printf("学号已存在！\n");
+
 			}
 			else
-				printf("学号已存在！\n");
-			
+				printf("学号无效，请重新输入！\n");
 		}
-		else
-			printf("学号无效，请重新输入！\n");
+		printf("学生姓名：");
+		scanf("%s", tempData.name);
+		printf("学生类别：");
+		scanf("%s", tempData.group);
+		printf("学生基础课1成绩：");
+		scanf("%d", &tempData.score1);
+		printf("学生基础课2成绩：");
+		scanf("%d", &tempData.score2);
+		printf("学生专业课1成绩：");
+		scanf("%d", &tempData.score3);
+		printf("学生专业课2成绩：");
+		scanf("%d", &tempData.score4);
+		//计算总分
+		tempData.total = tempData.score1 + tempData.score2 + tempData.score3 + tempData.score4;
+		//判断学院
+		int collegeID = 0;
+		char collegeIDs[3] = { 0 };
+		strncpy(collegeIDs, tempData.stuID + 4, 2);
+		collegeID = atoi(collegeIDs);
+		strcpy(tempData.college, colInfo[collegeID - 1]);
+		list_insert(list, tempData);
+		while (1)
+		{
+			printf("添加成功! 是否继续？(y/n):");
+			char ch[5] = { 0 };
+			scanf("%s", ch);
+			if ((ch[0] == 'y' || ch[0] == 'Y') && ch[1] == '\0') {
+				break;
+			}
+			else if ((ch[0] == 'n' || ch[0] == 'N') && ch[1] == '\0') {
+				printf("退出成功！");
+				return;
+			}
+			else
+			{
+				printf("输入有误！\n");
+			}
+		}
 	}
-	printf("学生姓名：");
-	scanf("%s", tempData.name);
-	printf("学生类别：");
-	scanf("%s", tempData.group);
-	printf("学生体温：");
-	scanf("%f", &tempData.t);
-	printf("是否咳嗽：");
-	scanf("%d", &tempData.ks);
-	printf("学生基础课1成绩：");
-	scanf("%d", &tempData.score1);
-	printf("学生基础课2成绩：");
-	scanf("%d", &tempData.score2);
-	printf("学生专业课1成绩：");
-	scanf("%d", &tempData.score3);
-	printf("学生专业课2成绩：");
-	scanf("%d", &tempData.score4);
-	//判断健康。0为异常，1为正常
-	if (tempData.t >= 37.2 || tempData.ks == 1)
-	{
-		tempData.health = 0;
-	}
-	else
-	{
-		tempData.health = 1;
-	}
-	//计算总分
-	tempData.total = tempData.score1 + tempData.score2 + tempData.score3 + tempData.score4;
-	//判断学院
-	int collegeID = 0;
-	char collegeIDs[3] = { 0 };
-	strncpy(collegeIDs, tempData.stuID + 4, 2);
-	collegeID = atoi(collegeIDs);
-	strcpy(tempData.college, colInfo[collegeID - 1]);
-	list_insert(list, tempData);
-	printf("添加成功!\n");
 	
 }
 
@@ -154,17 +160,38 @@ void delStuInfoByID(List* list)
 {
 	int temp;
 	char ID[20];
-	printf("请输入需要删除学生学号：");
-	scanf("%s", ID);
-	temp = list_del_byID(list, ID);
-	if (temp)
+	while (1)
 	{
-		printf("删除成功！\n");
+		printf("请输入需要删除学生学号：");
+		scanf("%s", ID);
+		temp = list_del_byID(list, ID);
+		if (temp)
+		{
+			printf("删除成功！\n");
+		}
+		else
+		{
+			printf("删除失败！\n");
+		}
+		while (1)
+		{
+			printf("是否继续？(y/n):");
+			char ch[5] = { 0 };
+			scanf("%s", ch);
+			if ((ch[0] == 'y' || ch[0] == 'Y') && ch[1] == '\0') {
+				break;
+			}
+			else if ((ch[0] == 'n' || ch[0] == 'N') && ch[1] == '\0') {
+				printf("退出成功！");
+				return;
+			}
+			else
+			{
+				printf("输入有误！\n");
+			}
+		}
 	}
-	else
-	{
-		printf("删除失败！\n");
-	}
+	
 }
 void updateInfo(List* list)
 {
@@ -172,52 +199,63 @@ void updateInfo(List* list)
 	Node* pos;
 	while (1)
 	{
-		printf("请输入需要修改的学生学号（按0退出）：");
-		scanf("%s", ID);
-		if (ID[0] == '0' && ID[1] == '\0')
+		while (1)
 		{
-			printf("退出成功！");
-			return;
-		}
-		pos = list_search_byID(list, ID);
-		if (pos)
-		{
-			strcpy(pos->val.stuID, ID);
-			printf("请输入各项信息：\n");
-			printf("学生姓名：");
-			scanf("%s", pos->val.name);
-			printf("学生类别：");
-			scanf("%s", pos->val.group);
-			printf("学生体温：");
-			scanf("%f", &pos->val.t);
-			printf("是否咳嗽：");
-			scanf("%d", &pos->val.ks);
-			printf("学生基础课1成绩：");
-			scanf("%d", &pos->val.score1);
-			printf("学生基础课2成绩：");
-			scanf("%d", &pos->val.score2);
-			printf("学生专业课1成绩：");
-			scanf("%d", &pos->val.score3);
-			printf("学生专业课2成绩：");
-			scanf("%d", &pos->val.score4);
-			//判断健康。0为异常，1为正常
-			if (pos->val.t >= 37.2 || pos->val.ks == 1)
-				pos->val.health = 0;
+			printf("请输入需要修改的学生学号（按0退出）：");
+			scanf("%s", ID);
+			if (ID[0] == '0' && ID[1] == '\0')
+			{
+				printf("退出成功！");
+				return;
+			}
+			pos = list_search_byID(list, ID);
+			if (pos)
+			{
+				strcpy(pos->val.stuID, ID);
+				printf("请输入各项信息：\n");
+				printf("学生姓名：");
+				scanf("%s", pos->val.name);
+				printf("学生类别：");
+				scanf("%s", pos->val.group);
+				printf("学生基础课1成绩：");
+				scanf("%d", &pos->val.score1);
+				printf("学生基础课2成绩：");
+				scanf("%d", &pos->val.score2);
+				printf("学生专业课1成绩：");
+				scanf("%d", &pos->val.score3);
+				printf("学生专业课2成绩：");
+				scanf("%d", &pos->val.score4);
+				//计算总分
+				pos->val.total = pos->val.score1 + pos->val.score2 + pos->val.score3 + pos->val.score4;
+				//判断学院
+				int collegeID = 0;
+				char collegeIDs[3] = { 0 };
+				strncpy(collegeIDs, ID + 4, 2);
+				collegeID = atoi(collegeIDs);
+				strcpy(pos->val.college, colInfo[collegeID - 1]);
+				printf("修改成功!\n");
+				break;
+			}
 			else
-				pos->val.health = 1;
-			//计算总分
-			pos->val.total = pos->val.score1 + pos->val.score2 + pos->val.score3 + pos->val.score4;
-			//判断学院
-			int collegeID = 0;
-			char collegeIDs[3] = { 0 };
-			strncpy(collegeIDs, ID + 4, 2);
-			collegeID = atoi(collegeIDs);
-			strcpy(pos->val.college, colInfo[collegeID - 1]);
-			printf("修改成功!\n");
-			break;
+				printf("学号有误，修改失败！\n");
 		}
-		else
-			printf("学号有误，修改失败！\n");
+		while (1)
+		{
+			printf("是否继续？(y/n):");
+			char ch[5] = { 0 };
+			scanf("%s", ch);
+			if ((ch[0] == 'y' || ch[0] == 'Y') && ch[1] == '\0') {
+				break;
+			}
+			else if ((ch[0] == 'n' || ch[0] == 'N') && ch[1] == '\0') {
+				printf("退出成功！");
+				return;
+			}
+			else
+			{
+				printf("输入有误！\n");
+			}
+		}
 	}
 }
 
@@ -230,14 +268,14 @@ void searchStuInfoByID(List* list)
 	p = list_search_byID(list, ID);
 	if (p)
 	{
-		printf("-----------------------------------------------------------------------------------------------------------------------\n");
-		printf("%-12s%-10s%-16s%-10s%-8s%-10s%-10s%-10s%-10s%-10s%-10s%-10s\n",
-			"学号", "姓名", "学院", "类别", "体温", "是否咳嗽", "健康状况", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
-		printf("-----------------------------------------------------------------------------------------------------------------------\n");
+		printf("--------------------------------------------------------------------------------------------\n");
+		printf("%-12s%-10s%-16s%-10s%-10s%-10s%-10s%-10s%-10s\n",
+			"学号", "姓名", "学院", "类别", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
+		printf("--------------------------------------------------------------------------------------------\n");
 		printf("%-12s%-10s%-16s%-10s%-8.1f%-10d%-10d%-10d%-10d%-10d%-10d%-10d\n",
-			p->val.stuID, p->val.name, p->val.college, p->val.group, p->val.t, p->val.ks,
-			p->val.health, p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
-		printf("-----------------------------------------------------------------------------------------------------------------------\n");
+			p->val.stuID, p->val.name, p->val.college, p->val.group, 
+			p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
+		printf("--------------------------------------------------------------------------------------------\n");
 	}
 	else
 	{
@@ -251,20 +289,20 @@ void searchStuInfoByName(List* list)
 	Node* p = NULL;
 	printf("请输入需要查询的学生姓名：");
 	scanf("%s", name);
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
-	printf("%-12s%-10s%-16s%-10s%-8s%-10s%-10s%-10s%-10s%-10s%-10s%-10s\n",
-		"学号", "姓名", "学院", "类别", "体温", "是否咳嗽", "健康状况", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
+	printf("--------------------------------------------------------------------------------------------\n");
+	printf("%-12s%-10s%-16s%-10s%-10s%-10s%-10s%-10s%-10s\n",
+		"学号", "姓名", "学院", "类别", "基础课1", "基础课2", "专业课1", "专业课1", "总分");
+	printf("--------------------------------------------------------------------------------------------\n");
 	for (p = list->head->next; p; p = p->next)
 	{
 		if (strstr(p->val.name, name) != NULL)
 		{
-			printf("%-12s%-10s%-16s%-10s%-8.1f%-10d%-10d%-10d%-10d%-10d%-10d%-10d\n",
-				p->val.stuID, p->val.name, p->val.college, p->val.group, p->val.t, p->val.ks,
-				p->val.health, p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
+			printf("%-12s%-10s%-16s%-10s%-10d%-10d%-10d%-10d%-10d\n",
+				p->val.stuID, p->val.name, p->val.college, p->val.group, 
+				p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
 		}
 	}
-	printf("-----------------------------------------------------------------------------------------------------------------------\n");
+	printf("--------------------------------------------------------------------------------------------\n");
 }
 
 List* classifyGroup(List* list, char* group)
@@ -318,25 +356,6 @@ List* calculateData(List* list, char* fileName)
 	return list;
 }
 
-void exceptionCount(List* list)
-{
-	Node* posNode = list->head->next;
-	if (posNode == NULL)
-	{
-		printf("数据为空！\n");
-		return;
-	}
-	List* newList = list_init();
-	for (; posNode; posNode = posNode->next)
-	{
-		if (posNode->val.health == 0)
-		{
-			list_insert(newList, posNode->val);
-		}
-	}
-	printStuInfo(newList);
-	writeStuInfo("data6.txt", newList);
-}
 void readStuInfo(char* FileName, List* list)
 {
 	FILE* fp = fopen(FileName, "r");
@@ -348,9 +367,8 @@ void readStuInfo(char* FileName, List* list)
 	stuInfo tempData;
 	while (!feof(fp))
 	{
-		fscanf(fp, "%12s%10s%20s%10s%8f%10d%10d%10d%10d%10d%10d%10d\n",
+		fscanf(fp, "%12s%10s%20s%10s%10d%10d%10d%10d%10d\n",
 			tempData.stuID, tempData.name, tempData.college, tempData.group,
-			&tempData.t, &tempData.ks, &tempData.health,
 			&tempData.score1, &tempData.score2, &tempData.score3, &tempData.score4, &tempData.total);
 		list_insert(list, tempData);
 	}
@@ -362,9 +380,8 @@ void writeStuInfo(char* FileName, List* list)
 	FILE* fp = fopen(FileName, "w");
 	while (p)
 	{
-		fprintf(fp, "%-12s%-10s%-20s%-10s%-8.1f%-10d%-10d%-10d%-10d%-10d%-10d%-10d\n",
+		fprintf(fp, "%-12s%-10s%-20s%-10s%-10d%-10d%-10d%-10d%-10d\n",
 			p->val.stuID, p->val.name, p->val.college, p->val.group,
-			p->val.t, p->val.ks, p->val.health,
 			p->val.score1, p->val.score2, p->val.score3, p->val.score4, p->val.total);
 		p = p->next;
 	}
