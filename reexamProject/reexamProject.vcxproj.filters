@@ -21,14 +21,8 @@
     <ClCompile Include="stuInfo.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="account.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="account.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="stuInfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
